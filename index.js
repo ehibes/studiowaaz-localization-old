@@ -29,9 +29,9 @@ module.exports = {
       }
 
       function setLocale(req,locale) {
-        req.session.locale = set;
-        req.data.activeLocale = set;
-        self.apos.i18n.setLocale(req,set);
+        req.session.locale = locale;
+        req.data.activeLocale = locale;
+        self.apos.i18n.setLocale(req,locale);
       }
 
       if (/^\/(modules|uploads)\//.test(req.url)) {
@@ -83,7 +83,6 @@ module.exports = {
        */
       if(req.session && req.session.locale) {
         locale = req.session.locale;
-        console.log(locale);
       } else {
         return setImmediate(callback);
       }
