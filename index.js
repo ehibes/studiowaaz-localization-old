@@ -11,7 +11,6 @@ module.exports = {
 
   },
   construct: function(self, options) {
-    //Méthode qui fixe la locale
     self.defaultLocale = options.default || "en";
     self.locales = options.locales;
     self.neverTypes =options.neverTypes || ['apostrophe-images'];
@@ -38,11 +37,11 @@ module.exports = {
         return next();
       }
 
-
-      var matches = req.url.match(/^\/(\w+)(\/.*|\?.*|)$/);
+      // is locale in url?
+      var matches = req.url.match(/^\/(\w{2,3})(\/.*|\?.*|)$/);
       if (!matches) {
         //do not keep the session locale here
-        setLocale(req,self.defaultLocale);
+        setLocale(req, self.defaultLocale);
         if (self.prefixes) {
           return res.redirect('/'+self.defaultLocale+req.url);
         }
@@ -65,22 +64,10 @@ module.exports = {
       return next();
 
     };
-    //Définition du cursor (utile?)
     self.apos.define('apostrophe-cursor', require('./lib/cursor.js')(self));
 
     self.docBeforeSave = function(req, doc, options,callback) {
 
-      /**
-       * For future reference.
-       *
-       *
-       * This is called on a POST which means that the URL does not
-       * contain a locale prefix which in turn means that req.locale will
-       * not be set through the logic in the localizedGet middleware.
-       *
-       * This means that we need to store the locale in the session
-       * so that we have it available here
-       */
       if(req.session && req.session.locale) {
         locale = req.session.locale;
       } else {
