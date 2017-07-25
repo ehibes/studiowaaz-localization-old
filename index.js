@@ -29,10 +29,13 @@ module.exports = {
       }
 
       function setLocale(req,locale) {
-        var set = locale;
         req.session.locale = set;
         req.data.activeLocale = set;
         self.apos.i18n.setLocale(req,set);
+      }
+
+      if (/^\/(modules|uploads)\//.test(req.url)) {
+        return next();
       }
 
 
@@ -78,12 +81,10 @@ module.exports = {
        * This means that we need to store the locale in the session
        * so that we have it available here
        */
-      if(req.session && req.session.locale){
+      if(req.session && req.session.locale) {
         locale = req.session.locale;
-      }
-
-
-      if(!locale){
+        console.log(locale);
+      } else {
         return setImmediate(callback);
       }
 
