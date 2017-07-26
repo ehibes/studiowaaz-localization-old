@@ -91,6 +91,7 @@ module.exports = {
 
       _.each(doc, function(value, key) {
         if (key === 'title') {
+          f.ensureProperties(doc, locale);
           doc['localized'][locale]['title'] = value;
         }
         if (f.isArea(value)) {
