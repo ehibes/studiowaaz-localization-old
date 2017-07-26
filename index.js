@@ -22,6 +22,21 @@ module.exports = {
 
     f = localized(self);
 
+    self.addHelpers({
+      localePicker:function(args) {
+        var locales = {};
+        _.each(self.locales, function(value) {
+          locales[value] = '/'+value+self.apos.templates.contextReq.url;
+        });
+        return self.partial('localePicker', {locales: locales, current: self.apos.templates.contextReq.data.activeLocale});
+
+      },
+      toLocalUrl: function(url) {
+        // Replace spaces with claps
+        return "/"+ self.apos.templates.contextReq.data.activeLocale+ url;
+      }
+    });
+
     self.localizedGet=function(req, res, next) {
       if (req.method !== 'GET') {
         return next();
@@ -75,6 +90,9 @@ module.exports = {
       }
 
       _.each(doc, function(value, key) {
+        if (key === 'title') {
+          doc['localized'][locale]['title'] = value;
+        }
         if (f.isArea(value)) {
           var items = [];
           _.each(doc[key]["items"], function(item) {

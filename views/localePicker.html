@@ -1,0 +1,3 @@
+{% for locale, url in data.locales %}
+<li class="locale-item {%  if locale == current %}locale-active{% endif %}" ><a href="{{ url }}">{{ locale }}</a></li>
+{% endfor %}
