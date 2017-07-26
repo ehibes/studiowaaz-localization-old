@@ -34,6 +34,9 @@ module.exports = {
       toLocalUrl: function(url) {
         // Replace spaces with claps
         return "/"+ self.apos.templates.contextReq.data.activeLocale+ url;
+      },
+      getLocale: function() {
+        return self.apos.templates.contextReq.data.activeLocale;
       }
     });
 
